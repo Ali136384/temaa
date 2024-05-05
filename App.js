@@ -1,20 +1,58 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Starter from "./screens/Starter.jsx";
+import Login from "./screens/Login.jsx";
+import SignUp from "./screens/SignUp.jsx";
+import { StatusBar } from "react-native";
+import ForgotPassword from "./screens/ForgotPassword.jsx";
+import CreateNewPassword from "./screens/CreateNewPassword.jsx";
+import Home from "./screens/Home.jsx";
+import AddCat from "./screens/AddCat.jsx";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <StatusBar />
+      <Stack.Navigator>
+        <Stack.Screen
+          name="AddCat"
+          component={AddCat}
+          options={{ title: "", headerShown: false }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ title: "Welcome", headerShown: false }}
+        />
+        <Stack.Screen
+          name="Starter"
+          component={Starter}
+          options={{ title: "Welcome", headerShown: false }}
+        />
+        <Stack.Screen
+          name="CreateNewPassword"
+          component={CreateNewPassword}
+          options={{ title: "", headerShown: true, headerShadowVisible: false }}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={{ title: "", headerShown: true, headerShadowVisible: false }}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUp}
+          options={{ title: "Forgot ", headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ title: "Welcome", headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
