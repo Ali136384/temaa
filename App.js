@@ -9,6 +9,8 @@ import ForgotPassword from "./screens/ForgotPassword.jsx";
 import CreateNewPassword from "./screens/CreateNewPassword.jsx";
 import Home from "./screens/Home.jsx";
 import AddCat from "./screens/AddCat.jsx";
+import PetProfile from "./screens/PetProfile.jsx";
+import HealthRecords from "./screens/HealthRecords.jsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,14 +20,28 @@ export default function App() {
       <StatusBar />
       <Stack.Navigator>
         <Stack.Screen
-          name="AddCat"
-          component={AddCat}
-          options={{ title: "", headerShown: false }}
-        />
-        <Stack.Screen
           name="Home"
           component={Home}
           options={{ title: "Welcome", headerShown: false }}
+        />
+        <Stack.Screen
+          name="HealthReacords"
+          component={HealthRecords}
+          options={{ title: "Welcome", headerShown: false }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={PetProfile}
+          options={{ title: "Welcome", headerShown: false }}
+        />
+        <Stack.Screen
+          name="AddCat"
+          component={AddCat}
+          options={{
+            title: "",
+            headerShown: false,
+            headerShadowVisible: false,
+          }}
         />
         <Stack.Screen
           name="Starter"

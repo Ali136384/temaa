@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { Feather } from "@expo/vector-icons";
@@ -38,7 +39,7 @@ const DATA = [
   },
 ];
 
-export default function Home() {
+export default function Home({ navigation }) {
   return (
     <ImageBackground source={require("../bg2.jpg")}>
       <View style={styles.container}>
@@ -70,15 +71,21 @@ export default function Home() {
             data={DATA}
             renderItem={({ item }) => {
               return (
-                <View style={styles.cat_container}>
-                  <Image
-                    style={styles.cat_img}
-                    height={70}
-                    width={70}
-                    source={{ uri: item.uri }}
-                  />
-                  <Text>{item.name}</Text>
-                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Profile", { id: item.id })
+                  }
+                >
+                  <View style={styles.cat_container}>
+                    <Image
+                      style={styles.cat_img}
+                      height={70}
+                      width={70}
+                      source={{ uri: item.uri }}
+                    />
+                    <Text>{item.name}</Text>
+                  </View>
+                </TouchableOpacity>
               );
             }}
             keyExtractor={(item) => item.id}
