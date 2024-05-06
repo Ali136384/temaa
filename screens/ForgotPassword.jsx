@@ -3,14 +3,36 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  Image,
   TextInput,
+  TouchableOpacity,
+  Alert,
+  Image,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import { sendPasswordResetEmail } from "@firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const { height, width } = Dimensions.get("window");
 
-export default function ForgotPassword() {
+export default function Forget_password({ navigation }) {
+  const [email, setEmail] = useState("");
+
+  const handleResetPassword = () => {
+    const auth = getAuth();
+    if (!email) {
+      Alert.alert("Error", "Please enter your email address");
+      return;
+    }
+
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        Alert.alert("Success", "Password reset email has been sent");
+      })
+      .catch((error) => {
+        Alert.alert("Error", error.message);
+      });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -18,11 +40,18 @@ export default function ForgotPassword() {
         <Text style={styles.forgot_password}>Forgot your password?</Text>
         <Text style={styles.enter_email}>Enter email address</Text>
         <View style={styles.emailPhone_inp}>
-          <TextInput placeholder="Enter your email address" />
+          <TextInput
+            placeholder="Enter your email address"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          />
         </View>
-        <View style={styles.send_link}>
+        <TouchableOpacity
+          style={styles.send_link}
+          onPress={handleResetPassword}
+        >
           <Text style={styles.send_link_txt}>Send Link</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -30,12 +59,13 @@ export default function ForgotPassword() {
 
 const styles = StyleSheet.create({
   container: {
-    height,
+    flex: 1,
     backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
   },
   content: {
     alignItems: "center",
-    marginTop: 150,
   },
   cat_fingers: {
     height: 50,
@@ -67,11 +97,11 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingHorizontal: 20,
     paddingVertical: 9,
+    alignItems: "center",
   },
   send_link_txt: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center",
     fontSize: 23,
   },
 });

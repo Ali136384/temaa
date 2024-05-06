@@ -57,7 +57,7 @@ export default function Home({ navigation }) {
         <View style={styles.hello_texts}>
           <Text style={styles.txt1}>Good afternoon, Temaa!</Text>
           <Text style={styles.txt2}>Ready to check on Loz?</Text>
-          <Text style={styles.txt3}>5/1/2024</Text>
+          <Text style={styles.txt3}>{new Date().toDateString()}</Text>
         </View>
         <View style={styles.input}>
           <Feather name="search" size={28} color="black" />

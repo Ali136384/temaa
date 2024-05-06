@@ -189,6 +189,7 @@ export default function PetProfile({ navigation, route }) {
                   <Text style={[styles.inside_txt, styles.margin_edits]}>
                     Chronic Conditions: {item?.healthRecords.chronicConditions}
                   </Text>
+
                   {item?.hasRecord && (
                     <Text
                       onPress={() => navigation.navigate("HealthReacords")}

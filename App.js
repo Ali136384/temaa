@@ -20,6 +20,16 @@ export default function App() {
       <StatusBar />
       <Stack.Navigator>
         <Stack.Screen
+          name="Starter"
+          component={Starter}
+          options={{ title: "Welcome", headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ title: "Welcome", headerShown: false }}
+        />
+        <Stack.Screen
           name="Home"
           component={Home}
           options={{ title: "Welcome", headerShown: false }}
@@ -44,11 +54,6 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name="Starter"
-          component={Starter}
-          options={{ title: "Welcome", headerShown: false }}
-        />
-        <Stack.Screen
           name="CreateNewPassword"
           component={CreateNewPassword}
           options={{ title: "", headerShown: true, headerShadowVisible: false }}
@@ -62,11 +67,6 @@ export default function App() {
           name="SignUp"
           component={SignUp}
           options={{ title: "Forgot ", headerShown: false }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ title: "Welcome", headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -8,12 +8,47 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { initializeApp } from "firebase/app";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "@firebase/auth";
 const { height, width } = Dimensions.get("window");
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDxIN3kQ3IjsHpXHPHT2xjk7PB0iNOlGzw",
+  authDomain: "temaa-auth.firebaseapp.com",
+  projectId: "temaa-auth",
+  storageBucket: "temaa-auth.appspot.com",
+  messagingSenderId: "258186085281",
+  appId: "1:258186085281:web:69dce5f8fda7da9d4ac1e0",
+};
+
+const app = initializeApp(firebaseConfig);
+
 export default function Login({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignIn = () => {
+    const auth = getAuth();
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("User signed in:", user);
+        navigation.navigate("Home");
+      })
+      .catch((error) => {
+        console.error("Sign-in error:", error);
+      });
+  };
   return (
     <ImageBackground source={require("../bg1.jpg")}>
       <View style={styles.container}>
@@ -29,10 +64,17 @@ export default function Login({ navigation }) {
         <View style={styles.login_card}>
           <Text style={styles.login_head_txt}>Login</Text>
           <View style={styles.emailPhone_inp}>
-            <TextInput placeholder="Enter email or phone" />
+            <TextInput
+              onChangeText={(txt) => setEmail(txt)}
+              placeholder="Enter email or phone"
+            />
           </View>
           <View style={[styles.emailPhone_inp, styles.password_inp]}>
-            <TextInput secureTextEntry placeholder="Password" />
+            <TextInput
+              onChangeText={(txt) => setPassword(txt)}
+              secureTextEntry
+              placeholder="Password"
+            />
             <Text>
               <Feather name="eye-off" size={24} color="black" />
             </Text>
@@ -44,7 +86,7 @@ export default function Login({ navigation }) {
             Forgot Password ?
           </Text>
           <View style={styles.login_btn}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleSignIn}>
               <Text style={styles.login_txt}>LOGIN</Text>
             </TouchableOpacity>
           </View>

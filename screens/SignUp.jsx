@@ -8,12 +8,70 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { initializeApp } from "firebase/app";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "@firebase/auth";
+import { updateProfile } from "@firebase/auth";
+
 const { height, width } = Dimensions.get("window");
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDxIN3kQ3IjsHpXHPHT2xjk7PB0iNOlGzw",
+  authDomain: "temaa-auth.firebaseapp.com",
+  projectId: "temaa-auth",
+  storageBucket: "temaa-auth.appspot.com",
+  messagingSenderId: "258186085281",
+  appId: "1:258186085281:web:69dce5f8fda7da9d4ac1e0",
+};
+
+const app = initializeApp(firebaseConfig);
+
 export default function SignUp({ navigation }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassowrd] = useState("");
+
+  const handleSignUp = () => {
+    if (password !== confirmPassword) {
+      // setPasswordError("Passwords do not match");
+      return;
+    }
+
+    const auth = getAuth();
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up successfully
+        const user = userCredential.user;
+        console.log("User signed up:", user);
+
+        // Update user profile with name
+        updateProfile(user, { displayName: name })
+          .then(() => {
+            console.log("User profile updated with name:", name);
+            // Navigate to the home screen or any other screen upon successful sign-up
+            navigation.navigate("Login");
+          })
+          .catch((error) => {
+            console.error("Error updating user profile:", error);
+          });
+      })
+      .catch((error) => {
+        // Handle sign-up errors
+        console.error("Sign-up error:", error);
+        // You can display an error message to the user here if needed
+      });
+  };
+
   return (
     <ImageBackground source={require("../bg1.jpg")}>
       <View style={styles.container}>
@@ -30,19 +88,33 @@ export default function SignUp({ navigation }) {
           <Text style={styles.login_head_txt}>Register</Text>
           <Text style={styles.create_account}>Create your new account</Text>
           <View style={styles.emailPhone_inp}>
-            <TextInput placeholder="Name" />
+            <TextInput
+              onChangeText={(txt) => setName(txt)}
+              placeholder="Name"
+            />
           </View>
           <View style={styles.emailPhone_inp}>
-            <TextInput placeholder="E-mail" />
+            <TextInput
+              onChangeText={(txt) => setEmail(txt)}
+              placeholder="E-mail"
+            />
           </View>
           <View style={styles.emailPhone_inp}>
-            <TextInput placeholder="Password" />
+            <TextInput
+              onChangeText={(txt) => setPassword(txt)}
+              placeholder="Password"
+            />
           </View>
           <View style={styles.emailPhone_inp}>
-            <TextInput placeholder="Confirm Password" />
+            <TextInput
+              onChangeText={(txt) => setConfirmPassowrd(txt)}
+              placeholder="Confirm Password"
+            />
           </View>
           <View style={[styles.login_btn]}>
-            <Text style={styles.sign_up_txt}>Sign Up</Text>
+            <Text onPress={handleSignUp} style={styles.sign_up_txt}>
+              Sign Up
+            </Text>
           </View>
           <Text style={styles.or}>OR</Text>
           <View style={[styles.login_btn, styles.with_google]}>
