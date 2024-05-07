@@ -8,10 +8,11 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
+import React, { useState, useEffect } from "react";
+
 import { Feather } from "@expo/vector-icons";
 import { initializeApp } from "firebase/app";
+import "expo-dev-client";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -19,6 +20,9 @@ import {
   onAuthStateChanged,
   signOut,
 } from "@firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import auth from "@react-native-firebase/auth";
+
 const { height, width } = Dimensions.get("window");
 
 const firebaseConfig = {
@@ -35,6 +39,50 @@ const app = initializeApp(firebaseConfig);
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+  GoogleSignin.configure({
+    webClientId:
+      "258186085281-0hrtmkb4nvp39lck2ni7ruhpkg5sh34r.apps.googleusercontent.com",
+  });
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) return null;
+
+  async function onGoogleLinkButtonPress() {
+    // Ensure the device supports Google Play services
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Obtain the user's ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Link the user's account with the Google credential
+    const firebaseUserCredential = await auth().currentUser.linkWithCredential(
+      googleCredential
+    );
+    //  Handle the linked account as needed in your app
+    // return console.log(first);
+    const user_sign_in = auth().signInWithCredential(googleCredential);
+    user_sign_in
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  ///Sign In function
 
   const handleSignIn = () => {
     const auth = getAuth();
@@ -99,7 +147,12 @@ export default function Login({ navigation }) {
                 uri: "https://s3-alpha-sig.figma.com/img/8e42/4139/9baefbe8f8feffab0fe67682e140e1b1?Expires=1715558400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ESW8UbJ1KsMxJ~QthmR5v-uM4iM4fA9Z-Hy2rIgp6m6-c~EIv8P7tiQ~h66OiXaFYZJS3lVWx4SmNNA6B38N6h9yrykBQSJPj~vbNJgB5mwvscd8T1df3XGAub8S-aM-yyZs4ti4AqGbijxD-np42EcRCMCNaWoTZzwxyniDv42z0eNsY4QKdVZEJQSbkFSx3d40CmmZ36XxWaJULAHUg5oGk10jbsA5k1CaV3CFFp5auY1YLlubpV3H0o05g-VoEuouxcYZTy0NzGm-eXO6H2It281ukto0QP1mD4FdoLLrfvY~WUvxHVTtXXognIS79y8UBuPsNOhyrpYXOT36mg__",
               }}
             />
-            <Text style={styles.with_google_txt}>Continue with Google</Text>
+            <Text
+              onPress={onGoogleLinkButtonPress}
+              style={styles.with_google_txt}
+            >
+              Continue with Google
+            </Text>
           </View>
           <Text
             onPress={() => navigation.navigate("SignUp")}
@@ -107,6 +160,7 @@ export default function Login({ navigation }) {
           >
             Don’t have an account? <Text style={styles.signUp}>Sign Up</Text>{" "}
           </Text>
+          {/* <Text onPress={signOutUser}>Sign out</Text> */}
         </View>
       </View>
     </ImageBackground>
