@@ -91,7 +91,7 @@ export default function Login({ navigation }) {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("User signed in:", user);
-        navigation.navigate("Home", { user });
+        navigation.navigate("Home", { user: user });
       })
       .catch((error) => {
         console.error("Sign-in error:", error);

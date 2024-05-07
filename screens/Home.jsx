@@ -14,6 +14,8 @@ import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { getAuth } from "firebase/auth";
+
 const { height, width } = Dimensions.get("window");
 
 const DATA = [
@@ -39,10 +41,19 @@ const DATA = [
   },
 ];
 
-export default function Home({ navigation, params }) {
+export default function Home({ navigation, route }) {
   useEffect(() => {
-    console.log(params?.user);
+    console.log(route?.params);
   }, []);
+  const handleSignOut = async () => {
+    const auth = getAuth();
+    try {
+      await auth.signOut(); // Sign out the user using Firebase auth
+      navigation.navigate("Login"); // Redirect the user to the login page
+    } catch (error) {
+      console.error("Error signing out:", error.message);
+    }
+  };
 
   return (
     <ImageBackground source={require("../bg2.jpg")}>
@@ -187,10 +198,7 @@ export default function Home({ navigation, params }) {
             <Text>Change of password</Text>
           </View>
           <View style={styles.log_out}>
-            <Text
-              onPress={() => navigation.navigate("Login")}
-              style={styles.log_out_txt}
-            >
+            <Text onPress={handleSignOut} style={styles.log_out_txt}>
               Log out
             </Text>
           </View>

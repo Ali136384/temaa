@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -5,12 +6,48 @@ import {
   Dimensions,
   Image,
   TextInput,
+  TouchableOpacity,
+  Alert,
 } from "react-native";
-import React from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
 const { height, width } = Dimensions.get("window");
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDxIN3kQ3IjsHpXHPHT2xjk7PB0iNOlGzw",
+  authDomain: "temaa-auth.firebaseapp.com",
+  projectId: "temaa-auth",
+  storageBucket: "temaa-auth.appspot.com",
+  messagingSenderId: "258186085281",
+  appId: "1:258186085281:web:69dce5f8fda7da9d4ac1e0",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 export default function AddCat({ navigation }) {
+  const [name, setName] = useState("");
+  const [breed, setBreed] = useState("");
+  const [gender, setGender] = useState("");
+  const [birth, setDob] = useState("");
+
+  const addCatToFirestore = async () => {
+    try {
+      await addDoc(collection(db, "cats"), {
+        name: name,
+        breed: breed,
+        gender: gender,
+        birth: birth,
+        treatment: true,
+        vaccination: true,
+      });
+      console.log("Cat added successfully");
+      Alert.alert("Cat added successfully !");
+      // You can navigate to another screen after adding the cat if needed
+    } catch (error) {
+      console.error("Error adding cat: ", error);
+    }
+  };
   return (
     <View style={styles.container}>
       <AntDesign
@@ -30,19 +67,27 @@ export default function AddCat({ navigation }) {
       <View style={styles.inputs_container}>
         <View>
           <Text style={styles.label}>Name</Text>
-          <TextInput style={styles.input} />
+          <TextInput style={styles.input} value={name} onChangeText={setName} />
         </View>
         <View>
           <Text style={styles.label}>Breed</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            style={styles.input}
+            value={breed}
+            onChangeText={setBreed}
+          />
         </View>
         <View>
           <Text style={styles.label}>Gender</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            style={styles.input}
+            value={gender}
+            onChangeText={setGender}
+          />
         </View>
         <View>
           <Text style={styles.label}>Date of Birth</Text>
-          <TextInput style={styles.input} />
+          <TextInput style={styles.input} value={birth} onChangeText={setDob} />
         </View>
       </View>
       <View style={styles.pic_contianer}>
@@ -91,7 +136,9 @@ export default function AddCat({ navigation }) {
           </View>
         </View>
         <View style={styles.add_button}>
-          <Text style={styles.add_txt}>Add</Text>
+          <Text onPress={addCatToFirestore} style={styles.add_txt}>
+            Add
+          </Text>
         </View>
       </View>
     </View>
