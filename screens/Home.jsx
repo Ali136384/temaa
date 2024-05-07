@@ -9,7 +9,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -39,7 +39,11 @@ const DATA = [
   },
 ];
 
-export default function Home({ navigation }) {
+export default function Home({ navigation, params }) {
+  useEffect(() => {
+    console.log(params?.user);
+  }, []);
+
   return (
     <ImageBackground source={require("../bg2.jpg")}>
       <View style={styles.container}>
@@ -183,7 +187,12 @@ export default function Home({ navigation }) {
             <Text>Change of password</Text>
           </View>
           <View style={styles.log_out}>
-            <Text style={styles.log_out_txt}>Log out</Text>
+            <Text
+              onPress={() => navigation.navigate("Login")}
+              style={styles.log_out_txt}
+            >
+              Log out
+            </Text>
           </View>
         </View>
       </View>

@@ -91,7 +91,7 @@ export default function Login({ navigation }) {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("User signed in:", user);
-        navigation.navigate("Home");
+        navigation.navigate("Home", { user });
       })
       .catch((error) => {
         console.error("Sign-in error:", error);
@@ -160,7 +160,6 @@ export default function Login({ navigation }) {
           >
             Don’t have an account? <Text style={styles.signUp}>Sign Up</Text>{" "}
           </Text>
-          {/* <Text onPress={signOutUser}>Sign out</Text> */}
         </View>
       </View>
     </ImageBackground>
