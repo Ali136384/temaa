@@ -9,7 +9,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -42,8 +42,9 @@ const DATA = [
 ];
 
 export default function Home({ navigation, route }) {
+  const [user, setUser] = useState();
   useEffect(() => {
-    console.log(route?.params);
+    console.log(setUser(route?.params.user));
   }, []);
   const handleSignOut = async () => {
     const auth = getAuth();
@@ -70,7 +71,7 @@ export default function Home({ navigation, route }) {
           <Feather name="bell" size={24} color="white" />
         </View>
         <View style={styles.hello_texts}>
-          <Text style={styles.txt1}>Good afternoon, Temaa!</Text>
+          <Text style={styles.txt1}>Good afternoon, {user?.displayName}!</Text>
           <Text style={styles.txt2}>Ready to check on Loz?</Text>
           <Text style={styles.txt3}>{new Date().toDateString()}</Text>
         </View>
