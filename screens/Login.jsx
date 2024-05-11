@@ -24,18 +24,6 @@ import auth from "@react-native-firebase/auth";
 
 const { height, width } = Dimensions.get("window");
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCsXLgBeQDDNZgLgSZDMdkcpDixnUOH9-I",
-  authDomain: "temaa-auth-b9466.firebaseapp.com",
-  projectId: "temaa-auth-b9466",
-  storageBucket: "temaa-auth-b9466.appspot.com",
-  messagingSenderId: "543048213631",
-  appId: "1:543048213631:web:9635cdebd4d22d07600b4a",
-  measurementId: "G-J7V3K86KC7",
-};
-
-const app = initializeApp(firebaseConfig);
-
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -15,12 +15,13 @@ import { initializeApp } from "firebase/app";
 const { height, width } = Dimensions.get("window");
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDxIN3kQ3IjsHpXHPHT2xjk7PB0iNOlGzw",
-  authDomain: "temaa-auth.firebaseapp.com",
-  projectId: "temaa-auth",
-  storageBucket: "temaa-auth.appspot.com",
-  messagingSenderId: "258186085281",
-  appId: "1:258186085281:web:69dce5f8fda7da9d4ac1e0",
+  apiKey: "AIzaSyCsXLgBeQDDNZgLgSZDMdkcpDixnUOH9-I",
+  authDomain: "temaa-auth-b9466.firebaseapp.com",
+  projectId: "temaa-auth-b9466",
+  storageBucket: "temaa-auth-b9466.appspot.com",
+  messagingSenderId: "543048213631",
+  appId: "1:543048213631:web:9635cdebd4d22d07600b4a",
+  measurementId: "G-J7V3K86KC7",
 };
 
 const app = initializeApp(firebaseConfig);
